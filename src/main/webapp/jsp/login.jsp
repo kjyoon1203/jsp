@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="/js/jquery-3.4.1.min.js"></script>
+<script src="<%=request.getContextPath() %>/js/jquery-3.4.1.min.js"></script>
 <script>
 	$(function(){
 		// 라디오 버튼 클릭이벤트 등록
@@ -38,7 +38,7 @@
 	<h2>get / post login</h2>
 	get: <input type="radio" id="get" name="method" value="get" checked/>
 	post: <input type="radio" id="post" name="method" value="post"/>
-	<form action="/jsp/loginProcess.jsp" method=method>
+	<form action="<%=request.getContextPath() %>/jsp/loginProcess.jsp" method=method>
 		user id : <input type="text" name="userId" value="brown"/><br>
 		user id : <input type="text" name="userId" value="cony"/><br>
 		password : <input type="password" name="password" value="brown1234"/><br>
