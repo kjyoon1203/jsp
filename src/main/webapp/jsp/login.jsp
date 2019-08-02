@@ -5,6 +5,20 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="/js/jquery-3.4.1.min.js"></script>
+<script>
+	$(function(){
+		// 라디오 버튼 클릭이벤트 등록
+		$('#get, #post').click(function(){
+			// 클릭한 라디오버튼이 get이면 .form태그의 method 속성을 get으로 변경
+			// 클릭한 라디오버튼이 post이면 .form태그의 method 속성을 post로 변경
+			console.log("click");
+			
+			var method = $(this).attr("id");
+			$('form').attr("method", method);
+		});
+	});
+</script>
 </head>
 <body>
 	<!-- 서버로 요청을 보낼 때
@@ -21,20 +35,15 @@
 			- 파라미터로 보내기 위해서는 위 태그의 속성중에 name 속성이 존재해야 한다.
 			- name 속성의 값이 파라미터 이름 ***
 			- value 속성이 파라미터 값 -->
-	<h2>get login</h2>
-	<form action="/jsp/getLoginProcess.jsp" method="get">
+	<h2>get / post login</h2>
+	get: <input type="radio" id="get" name="method" value="get" checked/>
+	post: <input type="radio" id="post" name="method" value="post"/>
+	<form action="/jsp/loginProcess.jsp" method=method>
 		user id : <input type="text" name="userId" value="brown"/><br>
 		user id : <input type="text" name="userId" value="cony"/><br>
 		password : <input type="password" name="password" value="brown1234"/><br>
 		<input type="submit" value="로그인"/>
 	</form>
 	
-	<h2>post login</h2>
-	<form action="/jsp/postLoginProcess.jsp" method="post">
-		user id : <input type="text" name="userId" value="brown"/><br>
-		user id : <input type="text" name="userId" value="cony"/><br>
-		password : <input type="password" name="password" value="brown1234"/><br>
-		<input type="submit" value="로그인"/>
-	</form>
 </body>
 </html>
