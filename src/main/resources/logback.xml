@@ -29,7 +29,6 @@
 		</encoder>
 	</appender>
 	
-	
 	<logger name="kr.or.ddit" level="debug">
 		<appender-ref ref="STDOUT2"/>
 	</logger>
