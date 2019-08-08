@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import kr.or.ddit.user.model.UserVo;
+import kr.or.ddit.user.model.User;
 
 // JUnit에서는 해당 메소드에 커서를 놓고 Ctrl + F11을 누르면 해당 메소드만 실행됨
 public class UserDaoTest {
@@ -24,7 +24,7 @@ public class UserDaoTest {
 		IUserDao userDao = new UserDao();
 
 		/***When***/
-		List<UserVo> userList = userDao.getUserList();
+		List<User> userList = userDao.getUserList();
 		
 		/***Then***/
 		assertEquals(5, userList.size());
@@ -44,7 +44,7 @@ public class UserDaoTest {
 		IUserDao userDao = new UserDao();
 
 		/***When***/
-		UserVo userVo = userDao.getUser(userId);
+		User userVo = userDao.getUser(userId);
 
 		/***Then***/
 		assertEquals("브라운", userVo.getUserName());
