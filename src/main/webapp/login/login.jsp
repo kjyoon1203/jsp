@@ -14,17 +14,72 @@
     <link rel="icon" href="../../favicon.ico">
 
     <title>Signin Template for Bootstrap</title>
-
+	<script src="<%=request.getContextPath()%>/js/jquery-3.4.1.min.js"></script>
     <!-- Bootstrap core CSS -->
     <link href="<%=request.getContextPath()%>/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="<%=request.getContextPath()%>/css/signin.css" rel="stylesheet">
-
+	<script>
+		$(function(){
+			var userId = getCookie("userId");
+			if(userId != undefined){
+				$('#userId').val(userId);
+				// remember me checkbox 체크
+				$('#rememberMe').prop("checked", true);
+			}
+			// signin btn 클릭 이벤트 핸들러
+			 $('#signinBtn').click(function(){
+				// remember me checkbox가 체크가 되었는지 확인
+				if($('#rememberMe').prop("checked")){
+					setCookie("userId", $('#userId').val(), 30);
+				}else{
+					deleteCookie("userId");
+				}
+				// 로그인 요청
+				$('#frm').submit();
+				
+				// 체크가 되어 있으면 userId 쿠키를 생성하고 값은 userId input의 값을 쿠키값으로 설정
+				// 체크가 되어 있지 않으면 
+				// 기존 사용자가 아이디를 쿠키에 저장하는 기능을 사용하다가 더 이상 사용하지 않는 경우
+				// 처음부터 아이디 쿠키 저장 기능을 사용하지 않는 경우
+				// => userId 쿠키 삭제
+				
+			 });
+		});
+	
+		// cookieString = document.cookie;
+		function getCookie(cookieId){
+			
+			var tempArray = document.cookie.split("; ");
+			for(i=0; i<tempArray.length; i++){
+				var nameValue = tempArray[i].split("=");
+				if(nameValue[0] == cookieId){
+					return nameValue[1];
+				}
+			}		
+			return null;
+		
+// 			$.each(function(){
+				
+// 			});
+		}
+		
+		function setCookie(cookieNm, cookieValue, expires){
+			var dt = new Date();
+			dt.setDate(dt.getDate() + Number(expires));
+			
+			document.cookie = cookieNm + "=" + cookieValue + ";path=/; expires=" +
+								dt.toGMTString();		
+		}
+		
+		function deleteCookie(cookieNm){
+			setCookie(cookieNm, "", -1);
+		}
+	</script>
   </head>
 
   <body>
-
     <div class="container">
 		<%
 			HttpSession httpSession = request.getSession();
@@ -33,7 +88,7 @@
 		    		userName = userVo == null ? "" : userVo.getUserName();
 		%>
 		사용자 이름: <%=userName %>
-      <form class="form-signin" action="<%=request.getContextPath() %>/login" method="post">
+      <form id="frm" class="form-signin" action="<%=request.getContextPath() %>/login" method="post">
         <h2 class="form-signin-heading">Please sign in</h2>
         <label for="userId" class="sr-only">userId</label>
         <%
@@ -42,16 +97,15 @@
         	String userId = request.getParameter("userId");
         	userId = userId == null ? "" : userId;
         %>
-        <input type="text" id="userId" name="userId" class="form-control" placeholder="ID" required autofocus
-        value="brown">
+        <input type="text" id="userId" name="userId" class="form-control" placeholder="ID" required autofocus>
         <label for="pass" class="sr-only">Password</label>
-        <input type="password" id="pass" name="pass" class="form-control" placeholder="Password" required value="brown1234">
+        <input type="password" id="pass" name="pass" class="form-control" placeholder="Password" required>
         <div class="checkbox">
           <label>
-            <input type="checkbox" value="remember-me"> Remember me
+            <input id="rememberMe" type="checkbox" value="remember-me"> Remember me
           </label>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <button class="btn btn-lg btn-primary btn-block" type="button" id="signinBtn">Sign in</button>
       </form>
 
     </div> <!-- /container -->
