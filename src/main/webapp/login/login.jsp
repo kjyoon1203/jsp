@@ -15,6 +15,7 @@
 
     <title>Signin Template for Bootstrap</title>
 	<script src="<%=request.getContextPath()%>/js/jquery-3.4.1.min.js"></script>
+	<script src="<%=request.getContextPath()%>/js/js.cookie.js"></script>
     <!-- Bootstrap core CSS -->
     <link href="<%=request.getContextPath()%>/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -22,7 +23,7 @@
     <link href="<%=request.getContextPath()%>/css/signin.css" rel="stylesheet">
 	<script>
 		$(function(){
-			var userId = getCookie("userId");
+			var userId = Cookies.get("userId");
 			if(userId != undefined){
 				$('#userId').val(userId);
 				// remember me checkbox 체크
@@ -32,9 +33,11 @@
 			 $('#signinBtn').click(function(){
 				// remember me checkbox가 체크가 되었는지 확인
 				if($('#rememberMe').prop("checked")){
-					setCookie("userId", $('#userId').val(), 30);
+// 					setCookie("userId", $('#userId').val(), 30);
+					Cookies.set("userId", $('#userId').val(), {expires : 30});
 				}else{
-					deleteCookie("userId");
+// 					deleteCookie("userId");
+					Cookies.remove("userId");
 				}
 				// 로그인 요청
 				$('#frm').submit();
@@ -49,7 +52,7 @@
 		});
 	
 		// cookieString = document.cookie;
-		function getCookie(cookieId){
+		/* function getCookie(cookieId){
 			
 			var tempArray = document.cookie.split("; ");
 			for(i=0; i<tempArray.length; i++){
@@ -75,7 +78,7 @@
 		
 		function deleteCookie(cookieNm){
 			setCookie(cookieNm, "", -1);
-		}
+		} */
 	</script>
   </head>
 
