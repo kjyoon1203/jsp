@@ -28,17 +28,19 @@
 				$('#userId').val(userId);
 				// remember me checkbox 체크
 				$('#rememberMe').prop("checked", true);
+				
+				$('#pass').focus();
 			}
 			// signin btn 클릭 이벤트 핸들러
 			 $('#signinBtn').click(function(){
 				// remember me checkbox가 체크가 되었는지 확인
-				if($('#rememberMe').prop("checked")){
+				/* if($('#rememberMe').prop("checked")){
 // 					setCookie("userId", $('#userId').val(), 30);
 					Cookies.set("userId", $('#userId').val(), {expires : 30});
 				}else{
 // 					deleteCookie("userId");
 					Cookies.remove("userId");
-				}
+				} */
 				// 로그인 요청
 				$('#frm').submit();
 				
@@ -51,34 +53,6 @@
 			 });
 		});
 	
-		// cookieString = document.cookie;
-		/* function getCookie(cookieId){
-			
-			var tempArray = document.cookie.split("; ");
-			for(i=0; i<tempArray.length; i++){
-				var nameValue = tempArray[i].split("=");
-				if(nameValue[0] == cookieId){
-					return nameValue[1];
-				}
-			}		
-			return null;
-		
-// 			$.each(function(){
-				
-// 			});
-		}
-		
-		function setCookie(cookieNm, cookieValue, expires){
-			var dt = new Date();
-			dt.setDate(dt.getDate() + Number(expires));
-			
-			document.cookie = cookieNm + "=" + cookieValue + ";path=/; expires=" +
-								dt.toGMTString();		
-		}
-		
-		function deleteCookie(cookieNm){
-			setCookie(cookieNm, "", -1);
-		} */
 	</script>
   </head>
 
@@ -105,7 +79,7 @@
         <input type="password" id="pass" name="pass" class="form-control" placeholder="Password" required>
         <div class="checkbox">
           <label>
-            <input id="rememberMe" type="checkbox" value="remember-me"> Remember me
+            <input id="rememberMe" name="rememberMe" type="checkbox" value="remember-me"> Remember me
           </label>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="button" id="signinBtn">Sign in</button>

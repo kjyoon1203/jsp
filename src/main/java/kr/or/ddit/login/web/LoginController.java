@@ -23,6 +23,14 @@ public class LoginController extends HttpServlet {
 	
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 	
+	private IUserDao userDao;
+	
+	@Override
+	public void init() throws ServletException {
+		// 사용자가 입력한 계정정보와 DB에 있는 값이랑 비교
+		userDao = new UserDao();
+	}
+	
 	/**
 	 * 
 	* Method : doGet
@@ -39,11 +47,13 @@ public class LoginController extends HttpServlet {
 		
 		// 웹브라우저가 보낸 cookie 확인
 		Cookie[] cookies = request.getCookies();
-		for(Cookie cookie: cookies) {
-			logger.debug("cookies name: {}, cookie value: {}"
+		if(cookies != null) {
+			for(Cookie cookie: cookies) {
+				logger.debug("cookies name: {}, cookie value: {}"
 						, cookie.getName(), cookie.getValue());
-			cookie.getName();
-			cookie.getValue();
+				cookie.getName();
+				cookie.getValue();
+			}			
 		}
 		
 		// 응답을 생성할 떄 웹브라우저에게 쿠키를 저장할 것을 지시
@@ -72,12 +82,14 @@ public class LoginController extends HttpServlet {
 		String userId = request.getParameter("userId");
 		String password = request.getParameter("pass");
 		
+		String rememberMe = request.getParameter("rememberMe");
+		
+		manegeUserIdCookie(response, userId, rememberMe);
+		
 		logger.debug("userId: {}", userId);
 		logger.debug("password: {}", password);
 		
-		// 사용자가 입력한 계정정보와 DB에 있는 값이랑 비교
 		// DB에서 조회해온 사용자 정보
-		IUserDao userDao = new UserDao();
 		User user = userDao.getUser(userId);
 		
 		// 사용자가 입력한 파라미터 정보와 db에서 조회해온 값이 동일할 경우 -> webapp/main.jsp
@@ -102,6 +114,17 @@ public class LoginController extends HttpServlet {
 			doGet(request, response);
 		}
 		
+	}
+
+	private void manegeUserIdCookie(HttpServletResponse response, String userId, String rememberMe) {
+		// rememberMe 파라미터가 존재할 경우 userId를 cookie로 생성
+		Cookie cookie = new Cookie("userId", userId);
+		if(rememberMe != null) {
+			cookie.setMaxAge(60*60*24*30);	// 유효기간: 30일
+		}else {
+			cookie.setMaxAge(0);	// 유효기간: 0으로 주면 쿠기 바로 삭제 / 음수로 주면 웹브라우저가 닫힐 때 삭제
+		}
+		response.addCookie(cookie);
 	}
 
 }
