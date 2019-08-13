@@ -38,7 +38,7 @@
 		<url-pattern>/TimesTablesServlet</url-pattern>
 	</servlet-mapping>
 	
-		<servlet>
+	<servlet>
 		<servlet-name>helloWorld2</servlet-name>	<!-- 개발자가 붙여주는 서블릿 이름(별칭) -->
 		<servlet-class>kr.or.ddit.servlet.HelloServlet</servlet-class>	<!-- 서브릿의 풀 네임 (패키지 + 클래스명) -->
 		<load-on-startup>1</load-on-startup>
