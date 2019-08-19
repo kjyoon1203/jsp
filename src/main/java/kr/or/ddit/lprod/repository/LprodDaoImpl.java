@@ -1,6 +1,7 @@
 package kr.or.ddit.lprod.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
@@ -16,6 +17,15 @@ public class LprodDaoImpl implements ILprodDao {
 		sqlSession.close();
 		
 		return lprodList;
+	}
+
+	@Override
+	public List<Map> getProdList(String prod_lgu) {
+		SqlSession sqlSession = MybatisUtil.getSession();
+		List<Map> prodList = sqlSession.selectList("lprod.getProdList", prod_lgu);
+		sqlSession.close();
+		
+		return prodList;
 	}
 
 }

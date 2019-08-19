@@ -4,6 +4,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style type="text/css">
+	table{
+		text-align: center;
+	}
+</style>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,21 +20,9 @@
 <title>Jsp-basicLib</title>
 <%@include file="/commonJsp/basicLib.jsp" %>
 
-<script>
-	$(function(){
-		$(".lprodTr").click(function(){
-			$("#lprod_gu").val($(this).children().eq(1).text());
-			$("#frm").submit();
-			
-		});
-	});
-</script>
-
 </head>
 <body>
-	<form id="frm" action="${cp }/prodList" method="get">
-		<input type="hidden" id="lprod_gu" name="lprod_gu"/>
-	</form>
+	
 	<!-- header -->
 	<%@include file="/commonJsp/header.jsp" %>
 	
@@ -43,27 +36,33 @@
 	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 		<div class="row">
 			<div class="col-sm-8 blog-main">
-				<h2 class="sub-header">제품그룹리스트</h2>
+				<h2 class="sub-header">제품리스트</h2>
 				<div class="table-responsive">
 					<table class="table table-striped">
 						<tr>
-							<th>lprod_ID</th>
-							<th>lprod_GU</th>
-							<th>lprod_Name</th>
+							<th>제품그룹명</th>
+							<th>제품그룹번호</th>
+							<th>바이어이름</th>
+							<th>제품아이디</th>
+							<th>제품명</th>
+							<th>가격</th>
 						</tr>
 
 						<%-- for(User user: userList) --%>
-						<c:forEach items="${lprodList}" var="lprod">
-							<tr class="lprodTr">
-								<td>${lprod.lprod_id}</td>
-								<td>${lprod.lprod_gu}</td>
-								<td>${lprod.lprod_nm}</td>
+						<c:forEach items="${prodList}" var="prod">
+							<tr>
+								<td>${prod.LPROD_NM}</td>
+								<td>${prod.PROD_LGU}</td>
+								<td>${prod.BUYER_NAME}</td>
+								<td>${prod.PROD_ID}</td>
+								<td>${prod.PROD_NAME}</td>
+								<td>${prod.PRICE}</td>
 							</tr>
 						</c:forEach>
 					</table>
 				</div>
 		
-				<a class="btn btn-default pull-right">제품그룹 등록</a>
+				<a class="btn btn-default pull-right">제품 등록</a>
 		
 				<div class="text-center">
 					<ul class="pagination">
