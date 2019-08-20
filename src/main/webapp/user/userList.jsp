@@ -24,10 +24,23 @@
 		// 사용자 정보 클릭시 이벤트 핸들러
 		$(".userTr").on("click", function(){
 			// 클릭한 tr 태그의 자식태그(td) 중 첫번째 자식의 텍스트 문자열
-			console.log($(this).children().first().text());
 			
+			// td태그의 텍스트 가져오기 
+			var tdText = $($(this).children()[1]).text();
+			console.log("tdText: " + tdText);
+			
+			// input 태그에 저장된 값 확인
+			var inputValue = $(this).find("input").val();
+			console.log("inputValue: " + inputValue);
+
+			// data 속성으로 값 가져오기
+			// data 속성명은 소문자로 치환된다
+			// data-userId -> $(this).data("userid");
+			var dataValue = $(this).data("userid");
+			console.log("dataValue: " + dataValue);
+				
 			// input 태그에 값 설정
-			$("#userId").val($(this).children().first().text());
+			$("#userId").val(dataValue);
 			
 			// form 태그이용 전송
 			console.log("serialize: "+$("#frm").serialize());
@@ -84,7 +97,8 @@
 								
 								<%-- for(User user: userList) --%>
 								<c:forEach items="${userList}" var="user">
-									<tr class="userTr">
+									<tr class="userTr" data-userId = "${user.userId }">
+										<input type="hidden" value="${user.userId}"/>
 										<td>${user.userId}</td>
 										<td>${user.userName}</td>
 										<td>${user.alias}</td>
