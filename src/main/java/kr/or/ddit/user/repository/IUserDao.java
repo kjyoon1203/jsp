@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
+import kr.or.ddit.common.model.Page;
 import kr.or.ddit.user.model.User;
 
 public interface IUserDao {
@@ -13,4 +14,7 @@ public interface IUserDao {
 	
 	List<User> getUserListOnlyHalf(SqlSession sqlSession);
 
+	List<User> getUserPagingList(SqlSession sqlSession, Page page);
+	
+	int getUserTotalCnt(SqlSession sqlSession);
 }
