@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
+import kr.or.ddit.common.model.Page;
 import kr.or.ddit.lprod.model.LprodVO;
 import kr.or.ddit.util.MybatisUtil;
 
@@ -26,6 +27,24 @@ public class LprodDaoImpl implements ILprodDao {
 		sqlSession.close();
 		
 		return prodList;
+	}
+
+	@Override
+	public List<LprodVO> getLprodPagingList(Page page) {
+		SqlSession sqlSession = MybatisUtil.getSession();
+		List<LprodVO> lprodList = sqlSession.selectList("lprod.getLprodPagingList", page);
+		sqlSession.close();
+		
+		return lprodList;
+	}
+
+	@Override
+	public int getLprodTotalCnt() {
+		SqlSession sqlSession = MybatisUtil.getSession();
+		int totalCnt = sqlSession.selectOne("lprod.getLprodTotalCnt");
+		sqlSession.close();
+		
+		return totalCnt;
 	}
 
 }

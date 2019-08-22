@@ -16,4 +16,17 @@
 		and		a.lprod_gu = #{lprod_gu}
 	</select>
 	
+	<select id="getLprodPagingList" parameterType="page" resultType="lprodVO">
+		select *
+		from (select lprod.*, rownum rn 
+		from lprod
+		order by lprod_id)
+		where rn between (#{page} - 1) * #{pagesize} + 1 and #{page} * #{pagesize}
+	</select>
+	
+	<select id="getLprodTotalCnt" resultType="Integer">
+		select 	count(*)
+		from	lprod
+	</select>
+	
 </mapper>
