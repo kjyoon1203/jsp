@@ -25,7 +25,7 @@
 		%>
 <%-- 		<% for(int i=0; i<userList.size(); i++){ %> --%>
 <!-- 			<tr> -->
-<%-- 				<td><%=userList.get(i).getUserName() %></td> --%>
+<%-- 				<td><%=userList.get(i).getUserNM() %></td> --%>
 <!-- 			</tr>		 -->
 <%-- 		<%}%> --%>
 		
@@ -33,7 +33,7 @@
 					for(User userVo:userList){
 				%>
 			<tr>
-				<td><%=userVo.getUserName() %></td>
+				<td><%=userVo.getUserNM() %></td>
 			</tr>		
 		<%}%>
 	</table>

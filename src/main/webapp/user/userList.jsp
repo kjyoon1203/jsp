@@ -89,7 +89,7 @@
 								%>
 								<tr>
 									<td><%=userVo.getUserId() %></td>
-									<td><%=userVo.getUserName() %></td>
+									<td><%=userVo.getUserNM() %></td>
 									<td></td>
 									<td></td>
 								</tr>
@@ -100,7 +100,7 @@
 									<tr class="userTr" data-userId = "${user.userId }">
 										<input type="hidden" value="${user.userId}"/>
 										<td>${user.userId}</td>
-										<td>${user.userName}</td>
+										<td>${user.userNM}</td>
 										<td>${user.alias}</td>
 										<td>${user.reg_dt_fmt}</td>
 									</tr>

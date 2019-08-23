@@ -18,11 +18,11 @@
 				<li><a href="#">Settings</a></li>
 				<li><a href="#">Profile</a></li>
 				<li><a href="#">Help</a></li>
-				<li><a href="#">${S_USERVO.userName}</a></li>
+				<li><a href="#">${S_USERVO.userNM}</a></li>
 <%-- 			<% User s_user = (User)session.getAttribute("S_USERVO"); %> --%>
-				<%-- <li><a href="#">표현식: <%=s_user.getUserName() %></a></li>
+				<%-- <li><a href="#">표현식: <%=s_user.getUserNM() %></a></li>
 				<li><a href="#">EL(field): ${S_USERVO.userName}</a></li> <!-- field는 getter에서 가져온다 -->
-				<li><a href="#">EL(method): ${S_USERVO.getUserName()}</a></li> --%>
+				<li><a href="#">EL(method): ${S_USERVO.getUserNM()}</a></li> --%>
 			</ul>
 			<form class="navbar-form navbar-right">
 				<input type="text" class="form-control" placeholder="Search...">

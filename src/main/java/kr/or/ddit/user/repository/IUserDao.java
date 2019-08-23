@@ -17,4 +17,8 @@ public interface IUserDao {
 	List<User> getUserPagingList(SqlSession sqlSession, Page page);
 	
 	int getUserTotalCnt(SqlSession sqlSession);
+	
+	int insertUser(SqlSession sqlSession, User user);
+	
+	int deleteUser(SqlSession sqlSession, String userId);
 }

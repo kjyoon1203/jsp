@@ -26,7 +26,7 @@
 	<c:forEach items="${userList }" var="user" varStatus="loop">
 		<!-- count가 10이하 일때만 나오도록 -->
 		<c:if test="${loop.count <= 10 }">
-			index: ${loop.index } / count: ${loop.count } / ${user.userId } / ${user.userName } <br>
+			index: ${loop.index } / count: ${loop.count } / ${user.userId } / ${user.userNM } <br>
 		</c:if>
 	</c:forEach>
 	
@@ -41,7 +41,7 @@
 		// servlet
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("userId", "brown");
-		map.put("userName", "브라운");
+		map.put("userNM", "브라운");
 		map.put("userAlias", "곰");
 		request.setAttribute("user", map);
 		

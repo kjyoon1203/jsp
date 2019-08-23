@@ -49,7 +49,7 @@
 							%>
 							<tr>
 								<td><%=userVo.getUserId() %></td>
-								<td><%=userVo.getUserName() %></td>
+								<td><%=userVo.getUserNM() %></td>
 								<td></td>
 								<td></td>
 							</tr>
@@ -59,7 +59,7 @@
 							<c:forEach items="${userListHalf}" var="user">
 								<tr>
 									<td>${user.userId}</td>
-									<td>${user.userName}</td>
+									<td>${user.userNM}</td>
 									<td>${user.alias}</td>
 									<td>${user.reg_dt_fmt}</td>
 								</tr>
