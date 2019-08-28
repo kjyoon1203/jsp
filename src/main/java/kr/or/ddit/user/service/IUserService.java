@@ -20,4 +20,6 @@ public interface IUserService {
 	public int insertUser(User user);
 	
 	public int deleteUser(String userId);
+	
+	public int updateUser(User user);
 }

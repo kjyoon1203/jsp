@@ -38,8 +38,8 @@
   </select>
   
   <insert id="insertUser" parameterType="user">
-  	insert into users(userId, userNM, pass, reg_dt, alias, addr1, addr2, zipcode)
-	values(#{userId}, #{userNM}, #{pass}, #{reg_dt}, #{alias}, #{addr1}, #{addr2}, #{zipcode})
+  	insert into users(userId, userNM, pass, reg_dt, alias, addr1, addr2, zipcode, filename, realfilename)
+	values(#{userId}, #{userNM}, #{pass}, #{reg_dt}, #{alias}, #{addr1}, #{addr2}, #{zipcode}, #{filename}, #{realfilename})
   </insert>
   
   <!-- 사용자 삭제 -->
@@ -47,4 +47,18 @@
   	delete 	users
   	where 	userid=#{userid} 
   </delete>
+  
+  <update id = "updateUser" parameterType="user">
+		update users 
+		set userNM = #{userNM},
+			pass = #{pass},
+			reg_dt = #{reg_dt},
+			alias = #{alias},
+			addr1 = #{addr1},
+			addr2 = #{addr2},
+			zipcode = #{zipcode},
+			filename = #{filename},
+			realfilename = #{realfilename}
+		where userId = #{userId}
+	</update>
 </mapper>

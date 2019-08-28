@@ -21,4 +21,6 @@ public interface IUserDao {
 	int insertUser(SqlSession sqlSession, User user);
 	
 	int deleteUser(SqlSession sqlSession, String userId);
+	
+	int updateUser(SqlSession sqlSession, User user);
 }

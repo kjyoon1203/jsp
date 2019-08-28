@@ -76,7 +76,16 @@ $(document).ready(function(){
 
 
 				<form id="frm" class="form-horizontal" role="form"
-						action="${cp }/userForm" method="post">
+						action="${cp }/userForm" method="post"
+						enctype="multipart/form-data">
+					<div class="form-group">
+						<label for="userId" class="col-sm-2 control-label">사용자 사진</label>
+						<div class="col-sm-10">
+							<input type="file" class="form-control" id="picture" name="picture"
+								placeholder="사용자 사진">
+						</div>
+					</div>
+					
 					<div class="form-group">
 						<label for="userId" class="col-sm-2 control-label">사용자 아이디</label>
 						<div class="col-sm-10">
