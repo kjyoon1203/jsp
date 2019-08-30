@@ -1,4 +1,4 @@
-                                            package kr.or.ddit.user.web;
+package kr.or.ddit.user.web;
 
 import java.io.IOException;
 import java.util.List;

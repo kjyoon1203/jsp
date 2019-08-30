@@ -18,17 +18,17 @@ public class KISA_SHA256 {
 	public static String encrypt(String plainText) {
 		StringBuffer encryptStringBuffer = new StringBuffer();
 		byte[] encryptByte = new byte[32];	
-
+				
 		/***when***/
 		KISA_SHA256.SHA256_Encrpyt(plainText.getBytes(), plainText.getBytes().length, encryptByte);
-
+		
 		/***then***/
 		for (int i=0; i<32; i++)
 			encryptStringBuffer.append(Integer.toHexString(0xff&encryptByte[i]));
-
+		
 		return encryptStringBuffer.toString();
 	}
-
+	
 	private static final int SHA256_K[] =
 	{
 		0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1,
@@ -92,7 +92,7 @@ public class KISA_SHA256 {
 	private static final int GetData(byte[] x, int x_offset) {
 		return Common.byte_to_int(x, x_offset, ENDIAN);
 	}
-
+	
 	//*********************************************************************************************************************************
 	// o SHA256_Transform() : 512 비트 단위 블록의 메시지를 입력 받아 연쇄변수를 갱신하는 압축 함수로써
 	//	                      4 라운드(64 단계)로 구성되며 8개의 연쇄변수(a, b, c, d, e, f, g, h)를 사용
@@ -240,9 +240,9 @@ public class KISA_SHA256 {
 		public int uLowLength;
 		public byte szBuffer[] = new byte[SHA256_DIGEST_BLOCKLEN];
 	}
-
+	
 	public static class Common {
-
+		
 		public static final int BIG_ENDIAN = 0;
 		public static final int LITTLE_ENDIAN = 1;
 
@@ -263,7 +263,7 @@ public class KISA_SHA256 {
 				dst[i] = value;
 			}
 		}
-
+		
 		public static void arrayinit_offset(byte[] dst, int dst_offset, byte value, int length) {
 			for(int i=0; i<length; i++) {
 				dst[dst_offset+i] = value;
@@ -299,7 +299,7 @@ public class KISA_SHA256 {
 				dst[b_offset/4] = (dst[b_offset/4] & mask_value2) | (value2 & mask_value);    
 			}
 		}
-
+		
 		public static byte get_byte_for_int(int[] src, int b_offset, int ENDIAN) {
 			if(ENDIAN == BIG_ENDIAN) {
 				int shift_value = (3-b_offset%4)*8;
@@ -312,16 +312,16 @@ public class KISA_SHA256 {
 				int value = (src[b_offset/4] & mask_value) >> shift_value;
 				return (byte)value;
 			}
-
+			
 		}
-
+		
 		public static byte[] get_bytes_for_ints(int[] src, int offset, int ENDIAN) {
 			int iLen = src.length-offset;
 			byte[] result = new byte[(iLen)*4];
 			for(int i=0; i<iLen; i++) {
 				int_to_byte(result, i*4, src, offset+i, ENDIAN);
 			}
-
+			
 			return result;
 		}
 
@@ -332,7 +332,7 @@ public class KISA_SHA256 {
 				dst[dst_offset] = ((0x0ff&src[src_offset])) | ((0x0ff&src[src_offset+1]) << 8) | ((0x0ff&src[src_offset+2]) << 16) | ((0x0ff&src[src_offset+3]) << 24);
 			}
 		}
-
+		
 		public static int byte_to_int(byte[] src, int src_offset, int ENDIAN) {
 			if(ENDIAN == BIG_ENDIAN) {
 				return ((0x0ff&src[src_offset]) << 24) | ((0x0ff&src[src_offset+1]) << 16) | ((0x0ff&src[src_offset+2]) << 8) | ((0x0ff&src[src_offset+3]));
@@ -348,7 +348,7 @@ public class KISA_SHA256 {
 		public static void int_to_byte(byte[] dst, int dst_offset, int[] src, int src_offset, int ENDIAN) {
 			int_to_byte_unit(dst, dst_offset, src[src_offset], ENDIAN);
 		}
-
+		
 		public static void int_to_byte_unit(byte[] dst, int dst_offset, int src, int ENDIAN) {
 			if(ENDIAN == BIG_ENDIAN) {
 				dst[dst_offset] = (byte)((src>> 24) & 0x0ff);
@@ -361,7 +361,7 @@ public class KISA_SHA256 {
 				dst[dst_offset+2] = (byte)((src >> 16) & 0x0ff);
 				dst[dst_offset+3] = (byte)((src >> 24) & 0x0ff);
 			}
-
+			
 		}
 
 		public static void int_to_byte_unit_big_endian(byte[] dst, int dst_offset, int src) {
@@ -380,7 +380,7 @@ public class KISA_SHA256 {
 			int v_mask = ~(0x80000000 >> (n-1));
 			return v & v_mask;
 		}
-
+		
 		public static final long INT_RANGE_MAX = (long)Math.pow(2, 32);
 
 		public static long intToUnsigned(int x) {
@@ -389,7 +389,7 @@ public class KISA_SHA256 {
 			return x + INT_RANGE_MAX;
 		}
 	}
-
+	
 	public static void main(String[] args)
 	{
 		byte pbData[]     = {(byte)0x00, (byte)0x01, (byte)0x02, (byte)0x03, (byte)0x04, (byte)0x05, (byte)0x06, (byte)0x07,
@@ -399,36 +399,36 @@ public class KISA_SHA256 {
 							(byte)0x08, (byte)0x09, (byte)0x0A, (byte)0x0B, (byte)0x0C, (byte)0x0D, (byte)0x0E, (byte)0x0F,
 							(byte)0x08, (byte)0x09, (byte)0x0A, (byte)0x0B, (byte)0x0C, (byte)0x0D, (byte)0x0E, (byte)0x0F};
 		byte pbData1[] = {(byte)0x61};
-
+		
 		byte pbCipher[]   = new byte[32];
 		byte pbPlain[]    = new byte[16];
-
+			
 		System.out.print("[ Test SHA256 reference code ]"+"\n");
 		System.out.print("\n\n");
 		System.out.print("[ Test HASH mode ]"+"\n");
 	    System.out.print("\n");
-
+	    
 	    int Plaintext_length = 1;
-
+	    
 	    for(int k=0; k<30; k++)
 	    {
-
+	    
 			System.out.print("Plaintext\t: ");
 		    for (int i=0; i<Plaintext_length; i++)	System.out.print(Integer.toHexString(0xff&pbData[i])+" ");
 		    System.out.print("\n");
-
+		  
 		// Encryption		
 		   SHA256_Encrpyt( pbData, Plaintext_length, pbCipher );
-
+	
 			System.out.print("Ciphertext\t: ");
 		    for (int i=0; i<32; i++)	System.out.print(Integer.toHexString(0xff&pbCipher[i])+" ");
 		    System.out.print("\n\n");
-
+		    
 		    Plaintext_length++;
-
+		    
 	    }
-
-
+	    
+	    
 		System.out.print("Plaintext\t: ");
 	    for (int i=0; i<1; i++)	System.out.print(Integer.toHexString(0xff&pbData1[i])+" ");
 	    System.out.print("\n");	  
@@ -437,7 +437,9 @@ public class KISA_SHA256 {
 		System.out.print("Ciphertext\t: ");
 	    for (int i=0; i<32; i++)	System.out.print(Integer.toHexString(0xff&pbCipher[i])+" ");
 	    System.out.print("\n\n");
-
+	    
+	    
+	    
 	}
 
 }

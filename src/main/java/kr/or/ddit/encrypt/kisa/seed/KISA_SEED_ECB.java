@@ -9,9 +9,9 @@ package kr.or.ddit.encrypt.kisa.seed;
 
 
 public class KISA_SEED_ECB {
+	
 
-
-
+	
 
 
 	// DEFAULT : JAVA = BIG_ENDIAN
@@ -250,8 +250,8 @@ public class KISA_SEED_ECB {
 		out[out_offset+3] = LR[LR_L1];
 
 	}
-
-
+	
+	
 	public static int[] chartoint32_for_SEED_ECB(byte[] in, int inLen) {
 		int[] data;
 		int len, i;
@@ -270,7 +270,7 @@ public class KISA_SEED_ECB {
 
 		return data;
 	}
-
+	
 
 	public static byte[] int32tochar_for_SEED_ECB(int in[], int inLen) {
 		byte[] data;
@@ -292,8 +292,8 @@ public class KISA_SEED_ECB {
 		return data;
 	}
 
-
-
+	
+	
 
 	public static byte[] SEED_ECB_Encrypt(byte[] pbszUserKey, byte[] pbData, int offset, int length) {
 		KISA_SEED_INFO info = new KISA_SEED_INFO();
@@ -303,23 +303,23 @@ public class KISA_SEED_ECB {
 		int outlen;
 		int nRetOutLeng[] = new int[] { 0 };
 		int nPaddingLeng[] = new int[] { 0 };
-
+		
 		byte[] pbszPlainText = pbData;
 		int nPlainTextLen = length;
-
+		
 		int nPlainTextPadding = (BLOCK_SIZE_SEED - (nPlainTextLen) % BLOCK_SIZE_SEED);
 		byte[] newpbszPlainText = new byte[nPlainTextLen + nPlainTextPadding];
 		Common.arraycopy(newpbszPlainText, pbszPlainText, nPlainTextLen);
-
+		
 		byte[] pbszCipherText = new byte[nPlainTextLen + nPlainTextPadding];
-
+		
 
 		SEED_ECB_init( info, KISA_ENC_DEC.KISA_ENCRYPT, pbszUserKey);
 
 		outlen =((newpbszPlainText.length/BLOCK_SIZE_SEED) )*BLOCK_SIZE_SEED_INT ;
-
+		
 		outbuf = new int[outlen];
-
+		
 		data = chartoint32_for_SEED_ECB(newpbszPlainText, nPlainTextLen);
 		SEED_ECB_Process( info, data, nPlainTextLen, outbuf, nRetOutLeng );
 		SEED_ECB_Close( info, outbuf, nRetOutLeng[0], nPaddingLeng );
@@ -333,7 +333,7 @@ public class KISA_SEED_ECB {
 
 		return pbszCipherText;
 	}	
-
+	
 
 
 	/********************************* Decryption *********************************/
@@ -345,18 +345,18 @@ public class KISA_SEED_ECB {
 	*/
 	// Same as encrypt, except that round keys are applied in reverse order
 
-
+	
 	public static void KISA_SEED_Decrypt_Block_forECB( int[] in, int in_offset, int[] out, int out_offset, KISA_SEED_KEY ks ) {
 		int LR[] = new int[4];				// Iuput/output values at each rounds
 		int T[] = new int[2];				// Temporary variables for round function F
 		int K[] = ks.key_data;				// Pointer of round keys
-
+	
 		// Set up input values for first round
 		LR[LR_L0] = in[in_offset+0];
 		LR[LR_L1] = in[in_offset+1];
 		LR[LR_R0] = in[in_offset+2];
 		LR[LR_R1] = in[in_offset+3];
-
+	
 		// Reorder for big endian
 		if(Common.BIG_ENDIAN != ENDIAN) {
 			LR[LR_L0] = EndianChange(LR[LR_L0]);
@@ -364,7 +364,7 @@ public class KISA_SEED_ECB {
 			LR[LR_R0] = EndianChange(LR[LR_R0]);
 			LR[LR_R1] = EndianChange(LR[LR_R1]);
 		}
-
+	
 		SeedRound(T, LR, LR_L0, LR_L1, LR_R0, LR_R1, K, 30);    // Round 1
 		SeedRound(T, LR, LR_R0, LR_R1, LR_L0, LR_L1, K, 28);    // Round 2
 		SeedRound(T, LR, LR_L0, LR_L1, LR_R0, LR_R1, K, 26);    // Round 3
@@ -381,26 +381,26 @@ public class KISA_SEED_ECB {
 		SeedRound(T, LR, LR_R0, LR_R1, LR_L0, LR_L1, K,  4);    // Round 14
 		SeedRound(T, LR, LR_L0, LR_L1, LR_R0, LR_R1, K,  2);    // Round 15
 		SeedRound(T, LR, LR_R0, LR_R1, LR_L0, LR_L1, K,  0);    // Round 16
-
+	
 		if(Common.BIG_ENDIAN != ENDIAN) {
 			LR[LR_L0] = EndianChange(LR[LR_L0]);
 			LR[LR_L1] = EndianChange(LR[LR_L1]);
 			LR[LR_R0] = EndianChange(LR[LR_R0]);
 			LR[LR_R1] = EndianChange(LR[LR_R1]);
 		}
-
+	
 		// Copy output values from last round to pbData
 		out[out_offset+0] = LR[LR_R0];
 		out[out_offset+1] = LR[LR_R1];
 		out[out_offset+2] = LR[LR_L0];
 		out[out_offset+3] = LR[LR_L1];
-
+	
 	}
-
-
-
+	
+	
+	
 	public static byte[] SEED_ECB_Decrypt(byte[] pbszUserKey, byte[] pbData, int offset, int length) {
-
+		
 		KISA_SEED_INFO info = new KISA_SEED_INFO();
 		int[] outbuf;
 		int[] data;
@@ -408,22 +408,22 @@ public class KISA_SEED_ECB {
 		int outlen = 0;
 		int nRetOutLeng[] = new int[] { 0 };
 		int nPaddingLeng[] = new int[] { 0 };
-
+		
 		byte[] pbszCipherText = pbData;
 		int nCipherTextLen = length;
-
+			
 		if (nCipherTextLen % BLOCK_SIZE_SEED > 0)
 		{
 			byte[] result = null;
 			return result;
 		}
-
+		
 		byte []newpbszCipherText = new byte[nCipherTextLen];
 		Common.arraycopy(newpbszCipherText, pbszCipherText, nCipherTextLen);
-
+		
 		byte[] pbszPlainText = new byte[nCipherTextLen];
 
-
+		
 		SEED_ECB_init( info, KISA_ENC_DEC.KISA_DECRYPT, pbszUserKey);
 
 		outlen = (nCipherTextLen/16)*4 ;
@@ -435,14 +435,14 @@ public class KISA_SEED_ECB {
 			cdata = int32tochar_for_SEED_ECB( outbuf, nRetOutLeng[0] - nPaddingLeng[0] );
 			Common.arraycopy(pbszPlainText, cdata, nRetOutLeng[0] - nPaddingLeng[0]);
 			int message_length = nRetOutLeng[0] - nPaddingLeng[0];
-
+			
 			if(message_length < 0)
 			{
 				message_length = 0;
 			}
 			byte[] result = new byte[message_length];
 			System.arraycopy(pbszPlainText, 0, result, 0, message_length);
-
+			
 			data = null;
 			cdata = null;
 			outbuf = null;
@@ -454,9 +454,9 @@ public class KISA_SEED_ECB {
 			return result;
 		}
 	}
-
-
-
+	
+	
+	
 	public static final class KISA_SEED_INFO {
 		public int encrypt;
 		public int ivec[] = new int[4];
@@ -478,7 +478,7 @@ public class KISA_SEED_ECB {
 
 
 	}
-
+	
 	public static final class KISA_ENC_DEC {
 		public static final int _KISA_DECRYPT = 0;
 		public static final int _KISA_ENCRYPT = 1;
@@ -503,13 +503,13 @@ public class KISA_SEED_ECB {
 			}
 		}
 	}
-
-
-
-
-
-
-
+	
+	
+	
+	
+		
+		
+	
 	public static int SEED_ECB_init( KISA_SEED_INFO pInfo, KISA_ENC_DEC enc, byte[] pbszUserKey) {
 		int ABCD[] = new int[4];			// Iuput/output values at each rounds(�� ���� ��/���)
 		int T[] = new int[2];				// Temporary variable
@@ -528,7 +528,7 @@ public class KISA_SEED_ECB {
 		ABCD[ABCD_B] = Common.byte_to_int(pbszUserKey, 1*4, ENDIAN);
 		ABCD[ABCD_C] = Common.byte_to_int(pbszUserKey, 2*4, ENDIAN);
 		ABCD[ABCD_D] = Common.byte_to_int(pbszUserKey, 3*4, ENDIAN);
-
+		
 		// Reorder for big endian
 		if(Common.BIG_ENDIAN != ENDIAN) {
 			ABCD[ABCD_A] = EndianChange(ABCD[ABCD_A]);
@@ -556,7 +556,7 @@ public class KISA_SEED_ECB {
 
 		T[0] = ABCD[ABCD_A] + ABCD[ABCD_C] - KC15;
 		T[1] = ABCD[ABCD_B] - ABCD[ABCD_D] + KC15;
-
+		
 		K[30] = SS0[GetB0(T[0])&0x0ff] ^ SS1[GetB1(T[0])&0x0ff] ^   // K_16,0
 				SS2[GetB2(T[0])&0x0ff] ^ SS3[GetB3(T[0])&0x0ff];
 		K[31] = SS0[GetB0(T[1])&0x0ff] ^ SS1[GetB1(T[1])&0x0ff] ^   // K_16,1
@@ -566,23 +566,23 @@ public class KISA_SEED_ECB {
 
 
 	}
-
+	
 	public static int SEED_ECB_Process( KISA_SEED_INFO pInfo, int[] in, int inLen, int[] out, int[] outLen ) {
-
+		
 		int nCurrentCount = BLOCK_SIZE_SEED;
 		int in_offset = 0;
 		int out_offset = 0;
-
+	
 		if( null == pInfo ||
 				null == in ||
 				null == out ||
 				0 > inLen )
 			return 0;
-
+	
 		if( KISA_ENC_DEC._KISA_ENCRYPT == pInfo.encrypt ) {
 			in_offset = 0;
 			out_offset = 0;
-
+	
 			while( nCurrentCount <= inLen )
 			{
 				KISA_SEED_Encrypt_Block_forECB( in, in_offset, out, out_offset, pInfo.seed_key );
@@ -590,16 +590,16 @@ public class KISA_SEED_ECB {
 				in_offset += BLOCK_SIZE_SEED_INT;
 				out_offset += BLOCK_SIZE_SEED_INT;
 			}
-
+	
 			outLen[0] = nCurrentCount - BLOCK_SIZE_SEED;
 			pInfo.buffer_length = inLen - outLen[0];
-
+	
 			Common.memcpy( pInfo.ecb_buffer, in, in_offset, pInfo.buffer_length );
 		}
 		else {
 			in_offset = 0;
 			out_offset = 0;
-
+		
 			while( nCurrentCount <= inLen )
 			{
 				KISA_SEED_Decrypt_Block_forECB( in, in_offset, out, out_offset, pInfo.seed_key );
@@ -610,19 +610,19 @@ public class KISA_SEED_ECB {
 			outLen[0] = nCurrentCount - BLOCK_SIZE_SEED;
 			Common.memcpy( pInfo.ecb_last_block, out, out_offset - 4, BLOCK_SIZE_SEED );
 		}
-
+	
 		return 1;
-
+	
 	}
-
+	
 	public static int SEED_ECB_Close( KISA_SEED_INFO pInfo, int[] out, int out_offset, int[] outLen ) {
 		int nPaddngLeng;
 		int i;
 		outLen[0] = 0;
-
+	
 		if( null == out )
 			return 0;
-
+	
 		if( KISA_ENC_DEC._KISA_ENCRYPT == pInfo.encrypt ) {
 			nPaddngLeng = BLOCK_SIZE_SEED - pInfo.buffer_length;
 			for( i = pInfo.buffer_length; i<BLOCK_SIZE_SEED; i++ ) {
@@ -648,14 +648,14 @@ public class KISA_SEED_ECB {
 		}
 		return 1;
 	}	
-
-
-
-
-
-
-
-
+	
+	
+	
+	
+	
+	
+	
+	
 
 	/************************ Constants for Key schedule **************************/
 	//  KC0 = golden ratio; KCi = ROTL(KCi-1, 1)
@@ -753,7 +753,7 @@ public class KISA_SEED_ECB {
 	}
 
 	public static class Common {
-
+		
 		public static final int BIG_ENDIAN = 0;
 		public static final int LITTLE_ENDIAN = 1;
 
@@ -774,7 +774,7 @@ public class KISA_SEED_ECB {
 				dst[i] = value;
 			}
 		}
-
+		
 		public static void arrayinit_offset(byte[] dst, int dst_offset, byte value, int length) {
 			for(int i=0; i<length; i++) {
 				dst[dst_offset+i] = value;
@@ -810,7 +810,7 @@ public class KISA_SEED_ECB {
 				dst[b_offset/4] = (dst[b_offset/4] & mask_value2) | (value2 & mask_value);    
 			}
 		}
-
+		
 		public static byte get_byte_for_int(int[] src, int b_offset, int ENDIAN) {
 			if(ENDIAN == BIG_ENDIAN) {
 				int shift_value = (3-b_offset%4)*8;
@@ -823,16 +823,16 @@ public class KISA_SEED_ECB {
 				int value = (src[b_offset/4] & mask_value) >> shift_value;
 				return (byte)value;
 			}
-
+			
 		}
-
+		
 		public static byte[] get_bytes_for_ints(int[] src, int offset, int ENDIAN) {
 			int iLen = src.length-offset;
 			byte[] result = new byte[(iLen)*4];
 			for(int i=0; i<iLen; i++) {
 				int_to_byte(result, i*4, src, offset+i, ENDIAN);
 			}
-
+			
 			return result;
 		}
 
@@ -843,7 +843,7 @@ public class KISA_SEED_ECB {
 				dst[dst_offset] = ((0x0ff&src[src_offset])) | ((0x0ff&src[src_offset+1]) << 8) | ((0x0ff&src[src_offset+2]) << 16) | ((0x0ff&src[src_offset+3]) << 24);
 			}
 		}
-
+		
 		public static int byte_to_int(byte[] src, int src_offset, int ENDIAN) {
 			if(ENDIAN == BIG_ENDIAN) {
 				return ((0x0ff&src[src_offset]) << 24) | ((0x0ff&src[src_offset+1]) << 16) | ((0x0ff&src[src_offset+2]) << 8) | ((0x0ff&src[src_offset+3]));
@@ -859,7 +859,7 @@ public class KISA_SEED_ECB {
 		public static void int_to_byte(byte[] dst, int dst_offset, int[] src, int src_offset, int ENDIAN) {
 			int_to_byte_unit(dst, dst_offset, src[src_offset], ENDIAN);
 		}
-
+		
 		public static void int_to_byte_unit(byte[] dst, int dst_offset, int src, int ENDIAN) {
 			if(ENDIAN == BIG_ENDIAN) {
 				dst[dst_offset] = (byte)((src>> 24) & 0x0ff);
@@ -872,7 +872,7 @@ public class KISA_SEED_ECB {
 				dst[dst_offset+2] = (byte)((src >> 16) & 0x0ff);
 				dst[dst_offset+3] = (byte)((src >> 24) & 0x0ff);
 			}
-
+			
 		}
 
 		public static void int_to_byte_unit_big_endian(byte[] dst, int dst_offset, int src) {
@@ -891,7 +891,7 @@ public class KISA_SEED_ECB {
 			int v_mask = ~(0x80000000 >> (n-1));
 			return v & v_mask;
 		}
-
+		
 		public static final long INT_RANGE_MAX = (long)Math.pow(2, 32);
 
 		public static long intToUnsigned(int x) {
@@ -900,18 +900,18 @@ public class KISA_SEED_ECB {
 			return x + INT_RANGE_MAX;
 		}
 	}
+	
 
-
-
+	
 	public static void main(String[] args)
 	{
 
 		// User secret key
 		byte pbUserKey[]  = {(byte)0x88, (byte)0xE3, (byte)0x4F, (byte)0x8F, (byte)0x08, (byte)0x17, (byte)0x79, (byte)0xF1,
 		                     (byte)0xE9, (byte)0xF3, (byte)0x94, (byte)0x37, (byte)0x0A, (byte)0xD4, (byte)0x05, (byte)0x89};
-
+		
 		byte pbData[]     = {(byte)0xD7, (byte)0x6D, (byte)0x0D, (byte)0x18, (byte)0x32, (byte)0x7E, (byte)0xC5, (byte)0x62, (byte)0xB1, (byte)0x5E, (byte)0x6B, (byte)0xC3, (byte)0x65, (byte)0xAC, (byte)0x0C, (byte)0x0F};
-
+		
 		byte pbData1[]    = {(byte)0x00, (byte)0x01};
 		byte pbData2[]     = {(byte)0x00, (byte)0x01, (byte)0x02, (byte)0x03, (byte)0x04, (byte)0x05, (byte)0x06, (byte)0x07, (byte)0x08, (byte)0x09, (byte)0x0A, (byte)0x0B, (byte)0x0C, (byte)0x0D, (byte)0x0E, (byte)0x0F, (byte)0x00, (byte)0x01};
 		byte pbCipher[]   = new byte[50];
@@ -920,13 +920,13 @@ public class KISA_SEED_ECB {
 		System.out.print("\n");
 		System.out.print("[ Test SEED reference code ECB ]"+"\n");
 		System.out.print("\n\n");
+		
 
-
-
+		
 	    /**********************************************************************************************
 	     * ��� 1
 	     **********************************************************************************************/
-
+		
 		//System.out.print("[ Test Encrypt mode ]"+"\n");
 		//System.out.print("\n\n��� 1 \n[ Test Encrypt mode ]"+"\n\n");
 		System.out.print("Key\t\t: ");
@@ -935,65 +935,65 @@ public class KISA_SEED_ECB {
 		System.out.print("Plaintext\t: ");
 	    for (int i=0; i<16; i++)	System.out.print(Integer.toHexString(0xff&pbData[i])+" ");
 	    System.out.print("\n\n\n");
-
+	    
 	    pbCipher = SEED_ECB_Encrypt(pbUserKey, pbData, 0, 16);
-
+	    
 	    pbPlain = SEED_ECB_Decrypt(pbUserKey, pbCipher, 0, 32);
-
+		
 		System.out.print("Ciphertext(SEED_ECB_Encrypt)\t: ");
 	    for (int i=0; i<32; i++)	System.out.print(Integer.toHexString(0xff&pbCipher[i])+" ");
 	    System.out.print("\n");
-
+	    
 		System.out.print("Plaintext(SEED_ECB_Decrypt)\t: ");
 	    for (int i=0; i<16; i++)	System.out.print(Integer.toHexString(0xff&pbPlain[i])+" ");
 	    System.out.print("\n\n\n");
-
-
+	    
+	    
 	    pbCipher = null;
 	    pbPlain = null;
-
-
-
+	    
+	    
+	    
 	    pbCipher = SEED_ECB_Encrypt(pbUserKey, pbData1, 0, 2);
-
+	    
 	    pbPlain = SEED_ECB_Decrypt(pbUserKey, pbCipher, 0, 16);
-
+		
 		System.out.print("Ciphertext(enc)\t: ");
 	    for (int i=0; i<16; i++)	System.out.print(Integer.toHexString(0xff&pbCipher[i])+" ");
 	    System.out.print("\n");
-
+	    
 		System.out.print("Plaintext(dec)\t: ");
 	    for (int i=0; i<2; i++)	System.out.print(Integer.toHexString(0xff&pbPlain[i])+" ");
 	    System.out.print("\n\n");
 
 	    pbCipher = null;
 	    pbPlain = null;
-
-
-
+	    
+	    
+	    
 	    pbCipher = SEED_ECB_Encrypt(pbUserKey, pbData2, 0, 18);
-
+	    
 	    pbPlain = SEED_ECB_Decrypt(pbUserKey, pbCipher, 0, 32);
-
+		
 		System.out.print("Ciphertext(enc)\t: ");
 	    for (int i=0; i<32; i++)	System.out.print(Integer.toHexString(0xff&pbCipher[i])+" ");
 	    System.out.print("\n");
-
+	    
 		System.out.print("Plaintext(dec)\t: ");
 	    for (int i=0; i<18; i++)	System.out.print(Integer.toHexString(0xff&pbPlain[i])+" ");
 	    System.out.print("\n\n");
-
+	    
 	    pbCipher = null;
 	    pbPlain = null;
+	    
+	    
+	    
 
-
-
-
-
+	    
 	    /**********************************************************************************************
 	     * ��� 2
 	     **********************************************************************************************/
-
+	    
 		System.out.print("\n\n��� 2 \n[ Test Encrypt mode ]"+"\n");
 		System.out.print("Key\t\t: ");
 	    for (int i=0; i<16; i++)	System.out.print(Integer.toHexString(0xff&pbUserKey[i])+" ");
@@ -1001,17 +1001,17 @@ public class KISA_SEED_ECB {
 		System.out.print("Plaintext\t: ");
 	    for (int i=0; i<16; i++)	System.out.print(Integer.toHexString(0xff&pbData[i])+" ");
 	    System.out.print("\n\n\n");	    
-
+	    
 	    /*********************************************************************
 	     * �׽�Ʈ���� 1
 	     *********************************************************************/
-
+	    
 	    int PLAINTEXT_LENGTH = 16;
 	    int CIPHERTEXT_LENGTH;
-
+	    
 	    KISA_SEED_INFO info = new KISA_SEED_INFO();
 		SEED_ECB_init( info, KISA_ENC_DEC.KISA_ENCRYPT, pbUserKey);
-
+		
 		int process_blockLeng = 32;
 		int[] outbuf = new int[process_blockLeng];
 		int i;
@@ -1021,11 +1021,11 @@ public class KISA_SEED_ECB {
 		int nPaddingLeng[] = new int[] { 0 };
 		byte[] pbszPlainText = new byte[process_blockLeng];
 		int nPlainTextPadding = (BLOCK_SIZE_SEED - (PLAINTEXT_LENGTH)%BLOCK_SIZE_SEED);
-
+		
 		CIPHERTEXT_LENGTH = PLAINTEXT_LENGTH + nPlainTextPadding;
-
+		
 		byte[] pbszCipherText = new byte[PLAINTEXT_LENGTH + nPlainTextPadding];
-
+		
 		for (i = 0; i < PLAINTEXT_LENGTH - process_blockLeng; )
 		{
 			System.arraycopy(pbData, i, pbszPlainText, 0, process_blockLeng);
@@ -1046,32 +1046,32 @@ public class KISA_SEED_ECB {
 		cdata = int32tochar_for_SEED_ECB(outbuf, nRetOutLeng[0]);
 		System.arraycopy(cdata, 0, pbszCipherText, i, nRetOutLeng[0]);
 		i += nRetOutLeng[0];
-
+		
 		SEED_ECB_Close( info, outbuf, 0, nPaddingLeng );
 		cdata = int32tochar_for_SEED_ECB(outbuf, nPaddingLeng[0]);
 		System.arraycopy(cdata, 0, pbszCipherText, i, nPaddingLeng[0]);
-
-
+		
+		
 		System.out.print("Ciphertext(enc)\t: ");
 	    for(i=0; i<CIPHERTEXT_LENGTH; i++)	 	System.out.print(Integer.toHexString(0xff&pbszCipherText[i])+" ");
-
+	    
 	    System.out.print("\n");
-
+		
 		data = null;
 		cdata = null;
 		outbuf = null;
 		info = null;
-
-
-
-
+		
+		
+		
+	    
 	   //��ȣ
-
+		
 
 	    CIPHERTEXT_LENGTH = 32;	
-
+	    
 	    byte[] result = new byte[] {0};
-
+		
 		info = new KISA_SEED_INFO();
 
 		int EncryptedMessage_length = CIPHERTEXT_LENGTH; 
@@ -1082,11 +1082,11 @@ public class KISA_SEED_ECB {
 		else
 		{
 			SEED_ECB_init( info, KISA_ENC_DEC.KISA_DECRYPT, pbUserKey);
-
+			
 			process_blockLeng = 32;
-
+			
 			outbuf = new int[process_blockLeng];
-
+			
 			byte[] cipherText = new byte[process_blockLeng];
 			pbszPlainText = new byte[EncryptedMessage_length];
 
@@ -1099,14 +1099,14 @@ public class KISA_SEED_ECB {
 				System.arraycopy(cdata, 0, pbszPlainText, i, nRetOutLeng[0]);
 				i += nRetOutLeng[0];
 			}
-
+			
 			remainleng = EncryptedMessage_length % process_blockLeng;
 			if (remainleng == 0)
 			{
 				remainleng = process_blockLeng;
 			}
-
-
+			
+			
 			System.arraycopy(pbszCipherText, i, cipherText, 0, remainleng);
 			data = chartoint32_for_SEED_ECB(cipherText, remainleng);
 			SEED_ECB_Process( info, data, remainleng, outbuf, nRetOutLeng );
@@ -1115,7 +1115,7 @@ public class KISA_SEED_ECB {
 				cdata = int32tochar_for_SEED_ECB( outbuf, remainleng - nPaddingLeng[0] );
 				System.arraycopy(cdata, 0, pbszPlainText, i, remainleng - nPaddingLeng[0]);
 				int message_length = i + remainleng - nPaddingLeng[0];
-
+				
 				result = new byte[message_length];
 				System.arraycopy(pbszPlainText, 0, result, 0, message_length);
 				data = null;
@@ -1129,42 +1129,42 @@ public class KISA_SEED_ECB {
 			}
 
 		}
-
+		
 		System.out.print("Plaintext(dec)\t: ");
 	    for (i=0; i<PLAINTEXT_LENGTH; i++)	System.out.print(Integer.toHexString(0xff&result[i])+" ");
 	    System.out.print("\n\n");		
-
-
+	    
+	    
 	    result = null;
-
+	    
 	    pbszCipherText = null;
-
-
-
-
-
-
-
-
+	    
+	    
+	    
+	    
+	    
+	    
+		
+		
 	    /*********************************************************************
 	     * �׽�Ʈ���� 2
 	     *********************************************************************/
-
+	    
 	    PLAINTEXT_LENGTH = 2;
 
-
+	    
 	    info = new KISA_SEED_INFO();
 		SEED_ECB_init( info, KISA_ENC_DEC.KISA_ENCRYPT, pbUserKey);
-
+		
 		process_blockLeng = 32;
 		outbuf = new int[process_blockLeng];
 		pbszPlainText = new byte[process_blockLeng];
 		nPlainTextPadding = (BLOCK_SIZE_SEED - (PLAINTEXT_LENGTH)%BLOCK_SIZE_SEED);
-
+		
 		CIPHERTEXT_LENGTH = PLAINTEXT_LENGTH + nPlainTextPadding;
-
+		
 		pbszCipherText = new byte[PLAINTEXT_LENGTH + nPlainTextPadding];
-
+		
 		for (i = 0; i < PLAINTEXT_LENGTH - process_blockLeng; )
 		{
 			System.arraycopy(pbData, i, pbszPlainText, 0, process_blockLeng);
@@ -1185,32 +1185,32 @@ public class KISA_SEED_ECB {
 		cdata = int32tochar_for_SEED_ECB(outbuf, nRetOutLeng[0]);
 		System.arraycopy(cdata, 0, pbszCipherText, i, nRetOutLeng[0]);
 		i += nRetOutLeng[0];
-
+		
 		SEED_ECB_Close( info, outbuf, 0, nPaddingLeng );
 		cdata = int32tochar_for_SEED_ECB(outbuf, nPaddingLeng[0]);
 		System.arraycopy(cdata, 0, pbszCipherText, i, nPaddingLeng[0]);
-
-
+		
+		
 		System.out.print("Ciphertext(enc)\t: ");
 	    for(i=0; i<CIPHERTEXT_LENGTH; i++)	 	System.out.print(Integer.toHexString(0xff&pbszCipherText[i])+" ");
-
+	    
 	    System.out.print("\n");
-
+		
 		data = null;
 		cdata = null;
 		outbuf = null;
 		info = null;
-
-
-
-
+		
+		
+		
+	    
 	   //��ȣ
-
+		
 
 	    CIPHERTEXT_LENGTH = 16;	
-
+	    
 	    result = new byte[] {0};
-
+		
 		info = new KISA_SEED_INFO();
 
 		EncryptedMessage_length = CIPHERTEXT_LENGTH; 
@@ -1221,11 +1221,11 @@ public class KISA_SEED_ECB {
 		else
 		{
 			SEED_ECB_init( info, KISA_ENC_DEC.KISA_DECRYPT, pbUserKey);
-
+			
 			process_blockLeng = 32;
-
+			
 			outbuf = new int[process_blockLeng];
-
+			
 			byte[] cipherText = new byte[process_blockLeng];
 			pbszPlainText = new byte[EncryptedMessage_length];
 
@@ -1238,14 +1238,14 @@ public class KISA_SEED_ECB {
 				System.arraycopy(cdata, 0, pbszPlainText, i, nRetOutLeng[0]);
 				i += nRetOutLeng[0];
 			}
-
+			
 			remainleng = EncryptedMessage_length % process_blockLeng;
 			if (remainleng == 0)
 			{
 				remainleng = process_blockLeng;
 			}
-
-
+			
+			
 			System.arraycopy(pbszCipherText, i, cipherText, 0, remainleng);
 			data = chartoint32_for_SEED_ECB(cipherText, remainleng);
 			SEED_ECB_Process( info, data, remainleng, outbuf, nRetOutLeng );
@@ -1254,7 +1254,7 @@ public class KISA_SEED_ECB {
 				cdata = int32tochar_for_SEED_ECB( outbuf, remainleng - nPaddingLeng[0] );
 				System.arraycopy(cdata, 0, pbszPlainText, i, remainleng - nPaddingLeng[0]);
 				PLAINTEXT_LENGTH = i + remainleng - nPaddingLeng[0];
-
+				
 				result = new byte[PLAINTEXT_LENGTH];
 				System.arraycopy(pbszPlainText, 0, result, 0, PLAINTEXT_LENGTH);
 				data = null;
@@ -1268,40 +1268,40 @@ public class KISA_SEED_ECB {
 			}
 
 		}
-
+		
 		System.out.print("Plaintext(dec)\t: ");
 	    for (i=0; i<PLAINTEXT_LENGTH; i++)	System.out.print(Integer.toHexString(0xff&result[i])+" ");
 	    System.out.print("\n\n");		
-
-
+	    
+	    
 	    result = null;
-
+	    
 	    pbszCipherText = null;
-
-
-
-
-
-
+	    
+	    
+	    
+	    
+	    
+	    
 	    /*********************************************************************
 	     * �׽�Ʈ���� 3
 	     *********************************************************************/
-
+	    
 	    PLAINTEXT_LENGTH = 18;
 
-
+	    
 	    info = new KISA_SEED_INFO();
 		SEED_ECB_init( info, KISA_ENC_DEC.KISA_ENCRYPT, pbUserKey);
-
+		
 		process_blockLeng = 32;
 		outbuf = new int[process_blockLeng];
 		pbszPlainText = new byte[process_blockLeng];
 		nPlainTextPadding = (BLOCK_SIZE_SEED - (PLAINTEXT_LENGTH)%BLOCK_SIZE_SEED);
-
+		
 		CIPHERTEXT_LENGTH = PLAINTEXT_LENGTH + nPlainTextPadding;
-
+		
 		pbszCipherText = new byte[PLAINTEXT_LENGTH + nPlainTextPadding];
-
+		
 		for (i = 0; i < PLAINTEXT_LENGTH - process_blockLeng; )
 		{
 			System.arraycopy(pbData2, i, pbszPlainText, 0, process_blockLeng);
@@ -1322,32 +1322,32 @@ public class KISA_SEED_ECB {
 		cdata = int32tochar_for_SEED_ECB(outbuf, nRetOutLeng[0]);
 		System.arraycopy(cdata, 0, pbszCipherText, i, nRetOutLeng[0]);
 		i += nRetOutLeng[0];
-
+		
 		SEED_ECB_Close( info, outbuf, 0, nPaddingLeng );
 		cdata = int32tochar_for_SEED_ECB(outbuf, nPaddingLeng[0]);
 		System.arraycopy(cdata, 0, pbszCipherText, i, nPaddingLeng[0]);
-
-
+		
+		
 		System.out.print("Ciphertext(enc)\t: ");
 	    for(i=0; i<CIPHERTEXT_LENGTH; i++)	 	System.out.print(Integer.toHexString(0xff&pbszCipherText[i])+" ");
-
+	    
 	    System.out.print("\n");
-
+		
 		data = null;
 		cdata = null;
 		outbuf = null;
 		info = null;
-
-
-
-
+		
+		
+		
+	    
 	   //��ȣ
-
+		
 
 	    CIPHERTEXT_LENGTH = 32;	
-
+	    
 	    result = new byte[] {0};
-
+		
 		info = new KISA_SEED_INFO();
 
 		EncryptedMessage_length = CIPHERTEXT_LENGTH; 
@@ -1358,11 +1358,11 @@ public class KISA_SEED_ECB {
 		else
 		{
 			SEED_ECB_init( info, KISA_ENC_DEC.KISA_DECRYPT, pbUserKey);
-
+			
 			process_blockLeng = 32;
-
+			
 			outbuf = new int[process_blockLeng];
-
+			
 			byte[] cipherText = new byte[process_blockLeng];
 			pbszPlainText = new byte[EncryptedMessage_length];
 
@@ -1375,14 +1375,14 @@ public class KISA_SEED_ECB {
 				System.arraycopy(cdata, 0, pbszPlainText, i, nRetOutLeng[0]);
 				i += nRetOutLeng[0];
 			}
-
+			
 			remainleng = EncryptedMessage_length % process_blockLeng;
 			if (remainleng == 0)
 			{
 				remainleng = process_blockLeng;
 			}
-
-
+			
+			
 			System.arraycopy(pbszCipherText, i, cipherText, 0, remainleng);
 			data = chartoint32_for_SEED_ECB(cipherText, remainleng);
 			SEED_ECB_Process( info, data, remainleng, outbuf, nRetOutLeng );
@@ -1391,7 +1391,7 @@ public class KISA_SEED_ECB {
 				cdata = int32tochar_for_SEED_ECB( outbuf, remainleng - nPaddingLeng[0] );
 				System.arraycopy(cdata, 0, pbszPlainText, i, remainleng - nPaddingLeng[0]);
 				PLAINTEXT_LENGTH = i + remainleng - nPaddingLeng[0];
-
+				
 				result = new byte[PLAINTEXT_LENGTH];
 				System.arraycopy(pbszPlainText, 0, result, 0, PLAINTEXT_LENGTH);
 				data = null;
@@ -1405,10 +1405,20 @@ public class KISA_SEED_ECB {
 			}
 
 		}
-
+		
 		System.out.print("Plaintext(dec)\t: ");
 	    for (i=0; i<PLAINTEXT_LENGTH; i++)	System.out.print(Integer.toHexString(0xff&result[i])+" ");
 	    System.out.print("\n\n");		    
-
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
 	}	
+	
+	
 }

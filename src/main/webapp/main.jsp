@@ -14,9 +14,26 @@
 
 <title>Jsp-Main</title>
 <%@include file="/commonJsp/basicLib.jsp" %>
+
+<script>
+	$(function(){
+		$(".active").click(function(){
+			var boardNo = $(this).find("input").val();
+			colsole.log("boardNo: " + boardNo);
+			
+			$("#boardNo").val(boardNo);
+			
+			$("#frm").submit();
+		});
+	});
+</script>
 </head>
 
 <body>
+	<form id="frm" action = "${cp }/freeBoardList" method="get">
+		<input type="hidden" id="boardNo" name="boardNo"/>
+	</form>
+	
 	<!-- header -->
 	<%@include file="/commonJsp/header.jsp" %>
 

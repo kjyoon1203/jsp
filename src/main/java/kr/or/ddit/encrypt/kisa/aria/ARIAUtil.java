@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 전자정부 제공 ARIAUTIL
  * ARIAUtil
  */
@@ -167,15 +167,15 @@ public class ARIAUtil {
 		StringBuffer buf = null;
 		try {
 			String privateKey = "dkaghghkzl@l";
-
+			
 			byte[] p;
 			byte[] c;
 			ARIAEngine instance = new ARIAEngine(256, privateKey);
-
+			
 			c = hexToByteArray(strHex);
 			p = new byte[c.length];
 			instance.decrypt(c, p, p.length);
-
+			
 			buf = new StringBuffer();
 			buf.append(new String(p));
 			return buf.toString().trim();
@@ -208,7 +208,7 @@ public class ARIAUtil {
 
 		return byteArrayToHex(c).toUpperCase();
 	}
-
+	
 	/*
 	*캐릭터셋 변경 암호화
 	*/
@@ -231,7 +231,7 @@ public class ARIAUtil {
 
 		return byteArrayToHex(c).toUpperCase();
 	}
-
+	
 	/*
 	*캐릭터셋 변경 암호화
 	*(서버타입설정 열람서버 : read, 등록관리서버 : regi)
@@ -282,7 +282,7 @@ public class ARIAUtil {
 
 		return buf.toString().trim();
 	}
-
+	
 	/*
 	 *Aria 캐릭터셋 변경 복호화
 	 *(서버타입설정 열람서버 : read, 등록관리서버 : regi)
@@ -293,7 +293,7 @@ public class ARIAUtil {
 		String privateKey = "";
 		if(server.equals("regi")) privateKey = "dkaghghkzl@l";
 		else privateKey = "dkaghghkzl@l";
-
+		 
 		byte[] p;
 		byte[] c;
 		ARIAEngine instance = new ARIAEngine(256, privateKey);
@@ -337,4 +337,4 @@ public class ARIAUtil {
 		return sb.toString(); 
 
 	}
-} 
+}

@@ -1,4 +1,4 @@
-//
+﻿//
 //  ARIA.java
 //  
 //  A pure Java implementation of ARIA 
@@ -585,7 +585,7 @@ class ARIAEngine {
 
 	}
 	public static void main(String[] args) throws InvalidKeyException {
-
+	
 	}
 }
 

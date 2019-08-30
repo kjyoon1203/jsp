@@ -1,5 +1,8 @@
 package kr.or.ddit.encrypt.kisa.seed;
 
+import java.beans.Encoder;
+import java.io.UnsupportedEncodingException;
+
 /**
 @file KISA_SEED_CBC.java
 @brief SEED CBC 암호 알고리즘
@@ -686,7 +689,7 @@ public class KISA_SEED_CBC {
 
 		byte[] temp = new byte[TEXT_SIZE];
 		byte[] temp2 = new byte[TEXT_SIZE];
-
+		
 		int loop = 0;
 		if (hash.length <= TEXT_SIZE) {
 			SeedDecrypt (hash, pdwRoundKey, result);
@@ -729,7 +732,7 @@ public class KISA_SEED_CBC {
 			return Decrypt (hashArray);
 		}
 	}
-
+	
 	/**
 	 * 암호화
 	 * @param password
@@ -745,7 +748,7 @@ public class KISA_SEED_CBC {
 			byte[] pwdByte = password.getBytes ();
 			int loop = (int) Math.ceil ((double) pwdByte.length / TEXT_SIZE);
 			byte[] result = new byte[TEXT_SIZE * loop];
-
+	
 			byte[] temp = new byte[TEXT_SIZE];
 			if (pwdByte.length <= TEXT_SIZE) {
 				temp = SeedEncrypt (AnsiX923Padding.addPadding (password.getBytes (), TEXT_SIZE));
@@ -768,7 +771,7 @@ public class KISA_SEED_CBC {
 					end += TEXT_SIZE;
 				}
 			}
-
+	
 			String resultHash = "";
 			for (byte hash : result) {
 				resultHash += StringUtil.addZero (Integer.toHexString (0xff & hash), 2);
@@ -776,14 +779,14 @@ public class KISA_SEED_CBC {
 			return resultHash;
 		}
 	}
-
+	
 	public static void main(String args[]) {
 		String str = "010-4333-xxxx";
-
+		
 		System.out.println ("## original : "+str);
 		str = Encrypt(str);
 		System.out.println ("## encrypt : "+str);
 		str = Decrypt (str);
 		System.out.println ("## decrypt : "+str);
 	}
-} 
+}
