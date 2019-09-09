@@ -3,9 +3,15 @@ package kr.or.ddit.user.model;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.servlet.http.HttpSessionBindingEvent;
+import javax.servlet.http.HttpSessionBindingListener;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import kr.or.ddit.encrypt.kisa.sha256.KISA_SHA256;
 
-public class User {
+public class User implements HttpSessionBindingListener {
 	private String userNM;	// 사용자 이름
 	private String pass;	// 비밀번호
 	private String userId;	// 아이디
@@ -17,7 +23,8 @@ public class User {
 	private String filename;
 	private String realfilename;
 	private String realfilename2;
-
+	private static final Logger logger = LoggerFactory.getLogger(User.class);
+	
 	public User() {
 	}
 	
@@ -143,4 +150,14 @@ public class User {
 		}
 		return false;
 	}
+
+	@Override
+   public void valueBound(HttpSessionBindingEvent event) {
+      logger.debug("value bound");
+   }
+
+   @Override
+   public void valueUnbound(HttpSessionBindingEvent event) {
+      logger.debug("value unbound");
+   }
 }

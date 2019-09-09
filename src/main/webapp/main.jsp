@@ -19,7 +19,6 @@
 	$(function(){
 		$(".active").click(function(){
 			var boardNo = $(this).find("input").val();
-			colsole.log("boardNo: " + boardNo);
 			
 			$("#boardNo").val(boardNo);
 			
